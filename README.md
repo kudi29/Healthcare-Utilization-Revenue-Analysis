@@ -98,7 +98,7 @@ Once the data was polished, I built four specific queries to answer the most imp
 **Provider Workload**
 <p align="center">
   <a href="Images/Provider_workload.png">
-    <img src="images/Provider_workload.png" width="800" alt="Provider Workload Dashboard"/>
+    <img src="Images/Provider_workload.png" width="800" alt="Provider Workload Dashboard"/>
   </a>
 </p>
 
