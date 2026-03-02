@@ -1,7 +1,11 @@
 # Healthcare-Utilization-Revenue-Analysis
-Healthcare Analytics: From Data Chaos to Clinical Insight
-Healthcare leaders are often drowning in data but starving for insights. This project bridges that gap. Using realistic synthetic data, I built a system that transforms messy, disorganized spreadsheets into a High-Performance Engine for decision-making.
-The goal: Create a "Single Source of Truth" to improve patient health outcomes, maintain financial viability, and optimize operational efficiency.
+# Healthcare Analytics: From Data Chaos to Clinical Insight
+Healthcare leaders are often drowning in data but starving for insights. 
+This project bridges that gap. Using realistic synthetic data, I built a system that transforms messy, 
+disorganized spreadsheets into a High-Performance Engine for decision-making.
+
+** The goal: **
+Create a "Single Source of Truth" to improve patient health outcomes, maintain financial viability, and optimize operational efficiency.
 🛠️ Project Stack
 Database: PostgreSQL (Relational Data Modeling)
 Data Engineering: CTEs, Window Functions (RANK), Complex JOIN logic, and Data Type Casting.
