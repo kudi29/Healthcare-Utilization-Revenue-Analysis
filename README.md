@@ -8,7 +8,7 @@ and ensure operations run smoothly.
 
 ---
 
-🛠️## Project Tools:
+ ## 🛠️Project Tools:
 
 - **Database:** PostgreSQL (Data Organization Model)  
 - **Data Extraction & Analysis:** CTEs, Window Functions (RANK), Complex JOINs, and Data type casting.  
@@ -16,7 +16,7 @@ and ensure operations run smoothly.
 
 ---
 
-🏗️# The Data Pipeline: From "Chaos" to "Clean"
+## 🏗️The Data Pipeline: From "Chaos" to "Clean"
 
 Before you can trust a report, you have to trust the data. I designed a two-step "sorting" process to protect the integrity of the final results:
 
@@ -42,7 +42,7 @@ This results in a much faster, more streamlined report that focuses on the key i
 
 ---
 
-📊# The Four Pillars of Insight
+## 📊The Four Pillars of Insight
 
 Once the data was polished, I built four specific queries to answer the most important questions in healthcare:
 
@@ -79,7 +79,7 @@ Once the data was polished, I built four specific queries to answer the most imp
 
 ---
 
-🚀# How to Run the Project
+## 🚀How to Run the Project
 
 1. **Environment:** Set up a PostgreSQL database.  
 2. **Schema Setup:** Run the `CREATE SCHEMA` scripts to establish the `raw` and `analytics` layers.  
@@ -90,7 +90,7 @@ Once the data was polished, I built four specific queries to answer the most imp
 
 ---
 
-💡# Why This Approach Works
+## 💡Why This Approach Works
 
 - **Safety First:** The original data is never touched. If we want to change our analysis later, we can "reset" without losing anything.  
 - **Quality Control:** The system acts as a bouncer, automatically blocking bad or incomplete data from entering your final reports.  
