@@ -79,6 +79,23 @@ Once the data was polished, I built four specific queries to answer the most imp
 
 ---
 
+## 📈Executive Insights
+
+Analyzed 1,452 conditions across 115 high-complexity patients to drive these three strategic wins:
+**Financial Recovery:** 
+Identified $3.78M in Outstanding Balances. Targeting the Top 10 debtor accounts alone can 
+recover $3M in immediate cash flow and stabilize volatile collection rates.
+**Operational Risk:** 
+Discovered a critical workload imbalance where one provider handles double the volume of others. 
+Recommended redistributing visits to underutilized staff to prevent burnout and turnover.
+**Clinical Strategy:** 
+Isolated "Super-Utilizers" (600+ visits) and identified a 50-visit "tipping point" where patient 
+complexity skyrockets, allowing for proactive, lower-cost interventions.
+
+## 👉Read the full insight in the reports folder
+
+---
+
 ## 🚀How to Run the Project
 
 1. **Environment:** Set up a PostgreSQL database.  
