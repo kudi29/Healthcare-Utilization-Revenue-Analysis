@@ -1,86 +1,41 @@
 # Healthcare-Utilization-Revenue-Analysis
-Healthcare leaders are often drowning in data but starving for insights. This project bridges that
-gap. Using realistic synthetic data, I built a system that takes messy, disorganized spreadsheets
-and transforms them into a high-performance engine for decision-making.
-The goal was simple: Create a &quot;Single Source of Truth&quot; to help leaders improve patient health,
-keep the organization financially healthy, and ensure operations run smoothly.
-
-Project Tools:
- Database: PostgreSQL (Data Organization Model)
- Data Extraction &amp; Analysis: CTEs, Window Functions (RANK), Complex JOINs, and
-Data type casting.
- Healthcare Operations Knowledge: Including Revenue Cycle, Population Health, and
-Clinical Processes
-
-The Data Pipeline: From &quot;Chaos&quot; to &quot;Clean&quot;
-Before you can trust a report, you have to trust the data. I designed a two-step &quot;sorting&quot; process
-to protect the integrity of the final results:
-
-1. The Junk Drawer (Raw Schema): I first pull the data exactly as it is. I ensure we don&#39;t
-lose any information just because a date was formatted strangely or a character was out of
-place.
-2. The Clean Room (Analytics Schema): This is where the magic happens. I scrub the
-data using four strict rules:
- Deduplication: Using SELECT DISTINCT to ensure no patient or encounter is
-counted twice.
- Orphan Control: Filtering child tables to ensure we don&#39;t have &quot;ghost&quot; records
-pointing to non-existent patients.
- Relational Integrity: Enforcing Primary and Foreign Keys to connect the dots
-between patients and their claims.
- Performance: Organizing the data so that complex questions get answered in
-seconds, not minutes.
-
-3. From PostgreSQL Database to Power BI using VIEW
-For fast and efficient reporting process I created four individual VIEWs that acts as a
-window into our database, each is tailored to answer a specific business question.
-By doing all the major filtering and organizing data inside the PostgreSQL database first,
-Power BI only has to pull exactly what it needs. This results in a much faster, more
-streamlined report that focuses on the key insights without being slowed down by
-unnecessary background information.
-
-The Four Pillars of Insight
-Once the data was polished, I built four specific queries to answer the most important questions
-in healthcare:
+Healthcare Analytics: From Data Chaos to Clinical Insight
+Healthcare leaders are often drowning in data but starving for insights. This project bridges that gap. Using realistic synthetic data, I built a system that transforms messy, disorganized spreadsheets into a High-Performance Engine for decision-making.
+The goal: Create a "Single Source of Truth" to improve patient health outcomes, maintain financial viability, and optimize operational efficiency.
+🛠️ Project Stack
+Database: PostgreSQL (Relational Data Modeling)
+Data Engineering: CTEs, Window Functions (RANK), Complex JOIN logic, and Data Type Casting.
+Business Intelligence: Power BI (Connected via SQL Views).
+Domain Knowledge: Revenue Cycle Management (RCM), Population Health, and Clinical Operations.
+🏗️ The Data Pipeline: "Chaos" to "Clean"
+I designed a two-step "sorting" process to protect the integrity of the final results:
+The Junk Drawer (Raw Schema): I ingest data exactly as-is. This ensures no information is lost due to strange date formatting or misplaced characters.
+The Clean Room (Analytics Schema): This is where the transformation happens. I scrub the data using four strict rules:
+Deduplication: Utilizing SELECT DISTINCT to ensure no patient or encounter is counted twice.
+Orphan Control: Filtering child tables to eliminate "ghost" records.
+Relational Integrity: Enforcing Primary and Foreign Keys to connect patients to their specific claims.
+Performance: Structuring data so complex queries return results in seconds, not minutes.
+📊 The Four Pillars of Insight
+I developed four specific SQL queries (and corresponding Power BI Views) to answer critical healthcare questions:
 1. The 360-Degree Patient View
- The Goal: How do we see the whole person, not just a chart?
- The Result: I merged demographics and medical history to create a complete
-story for every patient. This allows us to see how factors like age or race correlate
-with specific health outcomes, providing a &quot;Single Source of Truth&quot; for clinicians.
-
+Goal: See the whole person, not just a chart.
+Logic: Merged demographics and medical history to identify how age or race correlates with health outcomes.
 2. Patient Risk Forecasting
- The Goal: Which patients need our help the most?
- The Result: I created a &quot;risk score&quot; by identifying patients with multiple chronic
-conditions. This helps care managers prioritize outreach for patients who are most
-at risk for hospital readmissions.
-
+Goal: Identify high-risk patients for proactive care.
+Logic: Created a "Risk Score" by aggregating chronic conditions, helping care managers prioritize outreach and reduce hospital readmissions.
 3. The Revenue Roadmap
- The Goal: Where is our missing revenue?
- The Result: I built a financial health query that tracks the lifecycle of a medical
-claim from the initial bill to final payments. By isolating outstanding balances, I
-created a roadmap for the billing department to target unpaid claims and improve
-cash flow.
-
+Goal: Identify and recover missing revenue.
+Logic: Tracked the lifecycle of a medical claim. By isolating Outstanding Balances, I created a roadmap for the billing department to improve cash flow.
 4. Provider Workload Analysis
- The Goal: Are our resources being used efficiently?
- The Result: I analyzed how busy each doctor and clinic are. This shows exactly
-where we are overstretched and where we might need to hire more staff to reduce
-patient wait times.
-How to Run the Project
-
-1. Environment: Set up a PostgreSQL database.
-2. Schema Setup: Run the CREATE SCHEMA scripts to establish
-the raw and analytics layers.
-3. Data Load: Use the COPY commands to import the Synthea CSVs into
-the raw schema.
-4. Transformation: Run the ETL scripts to deduplicate, cast data types, and enforce keys
-in the analytics schema.
-
-Insights: Navigate to the /queries folder to run the four analysis scripts described above.
-
-Why This Approach Works
- Safety First: The original data is never touched. If we want to change our analysis
-later, we can &quot;reset&quot; without losing anything.
- Quality Control: The system acts as a bouncer, automatically blocking bad or
-incomplete data from entering your final reports.
- Actionable Results: We aren&#39;t just looking at numbers; we are looking at a roadmap
-to better patient care and a stronger bottom line.
+Goal: Efficient resource allocation.
+Logic: Analyzed clinician and clinic throughput to identify where the organization is overstretched and where additional staffing is required.
+🚀 How to Run the Project
+Environment: Set up a PostgreSQL database.
+Schema Setup: Run the CREATE SCHEMA scripts for the raw and analytics layers.
+Data Load: Use COPY commands to import Synthea CSVs into the raw schema.
+Transformation: Run the ETL scripts to deduplicate and enforce keys in the analytics schema.
+Insights: Navigate to the /queries folder to run the analysis scripts.
+💡 Why This Approach Works
+Safety First: The original data is never touched (Immutability). We can "reset" without data loss.
+Quality Control: The system acts as a bouncer, blocking bad data from entering final reports.
+Actionable Results: This isn't just a dashboard; it’s a roadmap to better patient care and a stronger bottom line.
