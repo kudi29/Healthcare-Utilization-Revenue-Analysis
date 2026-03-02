@@ -1,5 +1,6 @@
-# Healthcare-Utilization-Revenue-Analysis
+# Healthcare-Utilization-and-Revenue-Analysis
 
+Welcome to my **Healthcare Utilization & Revenue Analysis** repository! 
 Healthcare leaders are often drowning in data but starving for insights. This project bridges that gap. Using realistic synthetic data, 
 I built a system that takes messy, disorganized spreadsheets and transforms them into a high-performance engine for decision-making.
 The goal was simple: Create a "Single Source of Truth" to help leaders improve patient health, keep the organization financially healthy, 
