@@ -79,6 +79,32 @@ Once the data was polished, I built four specific queries to answer the most imp
 
 ---
 
+## 🖥️ Dashboard Overview 
+ **Patients Clinical Profile**
+ <p align="center">
+  <img src="images/Patients_Clinical_Profile.png" width="800" alt="Patients Clinical Profile"/>
+</p>
+
+ **High Risk Patients**
+<p align="center">
+  <img src="images/High_risk_patients.png" width="800" alt="High Risk Patient Dashboard"/>
+</p>
+
+**Revenue Analysis**
+<p align="center">
+  <img src="Revenue_Cycle.png" width="800" alt="Revenue Analysis Dashboard"/>
+</p>
+
+**Provider Workload**
+<p align="center">
+  <a href="images/Provider_workload.png">
+    <img src="images/Provider_workload.png" width="800" alt="Provider Workload Dashboard"/>
+  </a>
+</p>
+
+
+---
+
 ## 📈Executive Insights
 
 Analyzed 1,452 conditions across 115 high-complexity patients to drive these three strategic wins:
