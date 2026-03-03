@@ -11,7 +11,11 @@ and ensure operations run smoothly.
  ## 🛠️Project Tools:
 
 - **Database:** PostgreSQL (Data Organization Model)  
-- **Data Extraction & Analysis:** CTEs, Window Functions (RANK), Complex JOINs, and Data type casting.  
+- **Data Extraction & Analysis:** CTEs, Window Functions (RANK), Complex JOINs, and Data type casting.
+- ### 📊 Key DAX Measures
+*   **Collection Rate %**: `DIVIDE(SUM(paid), SUM(billed), 0)` – Tracks the 76.91% efficiency goal.
+*   **Due Balance**: `SUM(billed) - SUM(paid)` – Identifies the $3.78M recovery roadmap.
+*   **Patient Age**: `DATEDIFF(birth_date, TODAY(), YEAR)` – Powers the 360-Degree Clinical View.
 - **Healthcare Operations Knowledge:** Including Revenue Cycle, Population Health, and Clinical Processes  
 
 ---
