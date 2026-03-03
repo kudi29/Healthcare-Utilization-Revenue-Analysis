@@ -1,0 +1,20 @@
+Patient_Age = 
+DATEDIFF(
+	'vw_patient_summary'[birth_date],
+	TODAY(),
+	YEAR
+)
+
+Due Balance = 
+SUM( 
+	vw_outstanding_claims[total_billed_amount] ) - 
+	SUM(vw_outstanding_claims[total_amount_paid]
+)
+
+
+Collection Rate % = 
+DIVIDE(
+    SUM(vw_outstanding_claims[total_amount_paid]),
+    SUM(vw_outstanding_claims[total_billed_amount]),
+    0
+)
