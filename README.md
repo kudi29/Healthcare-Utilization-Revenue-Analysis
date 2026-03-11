@@ -25,8 +25,9 @@ and ensure operations run smoothly.
 Before you can trust a report, you have to trust the data. I designed a two-step "sorting" process to protect the integrity of the final results:
 <h2 align="center">PostgreSQL ETL Pipeline</h2>
 
- <p align="center">
-  <img src="ETL_diagram/ETL_Diagram" width="700" alt="PostgreSQL ETL Pipeline"/>
+<p align="center">
+  <img src="ETL_diagram/ETL_Diagram.png" 
+       alt="PostgreSQL ETL Flow Diagram" width="800"/>
 </p>
 
 ## 1. The Junk Drawer (Raw Schema)
