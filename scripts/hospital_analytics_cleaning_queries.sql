@@ -76,12 +76,6 @@ SELECT
 	CAST(income	AS NUMERIC(12,2))
 FROM raw.patients;
 
-ALTER TABLE analytics.dim_patients
-ADD CONSTRAINT pk_dim_patients PRIMARY KEY (id);
-
-
-SELECT * FROM analytics.dim_patients
-
 
 -- =============================================
 -- 2. Analytics Providers Dimension Table
@@ -263,7 +257,6 @@ SELECT
 
 FROM raw.claim_transactions;
 
-SELECT * FROM analytics.claim_transactions
 
 -- =============================================
 -- 6. Analytics Fact_Claim Table
@@ -460,6 +453,7 @@ ALTER TABLE analytics.fact_claims
 ALTER COLUMN id SET NOT NULL,
 ALTER COLUMN patient_id SET NOT NULL,
 ALTER COLUMN provider_id SET NOT NULL;
+
 
 
 
