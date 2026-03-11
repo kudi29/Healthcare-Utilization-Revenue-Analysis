@@ -26,7 +26,7 @@ Before you can trust a report, you have to trust the data. I designed a two-step
 <h2 align="center">PostgreSQL ETL Pipeline</h2>
 
  <p align="center">
-  <img src="Images/ETL_Diagram" width="700" alt="PostgreSQL ETL Pipeline"/>
+  <img src="ETL_diagram/ETL_Diagram" width="700" alt="PostgreSQL ETL Pipeline"/>
 </p>
 
 ## 1. The Junk Drawer (Raw Schema)
