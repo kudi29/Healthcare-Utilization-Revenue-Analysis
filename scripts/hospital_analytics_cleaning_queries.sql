@@ -69,12 +69,12 @@ SELECT
     fips,
     zip AS zip_code,
     CAST(lat AS DOUBLE PRECISION) AS latitude,
-    CAST(lon AS DOUBLE PRECISION) AS longitude,
-    CAST(GREATEST(healthcare_expenses,0) AS NUMERIC(12,2)) AS healthcare_expenses,
-    CAST(GREATEST(healthcare_coverage,0) AS NUMERIC(12,2)) AS healthcare_coverage,
-    CAST(GREATEST(income,0) AS NUMERIC(12,2)) AS income
+	CAST(lon AS DOUBLE PRECISION)longitude,
+	CAST(healthcare_expenses AS NUMERIC(12,2)),
+	CAST(healthcare_coverage AS NUMERIC(12,2)),
+	CAST(income	AS NUMERIC(12,2))
 FROM raw.patients
-WHERE birthdate <= CURRENT_DATE; 
+WHERE birthdate::DATE <= CURRENT_DATE; 
 
 -- =============================================
 -- 2. Analytics Providers Dimension Table
@@ -117,7 +117,7 @@ SELECT
     zip AS zip_code,
     CAST(lat AS DOUBLE PRECISION) AS latitude,
     CAST(lon AS DOUBLE PRECISION) AS longitude,
-    CAST(GREATEST(encounters,0) AS INT) AS encounters
+    CAST(encounters AS INT) AS encounters
 FROM raw.providers;
 
 -- =============================================
@@ -126,7 +126,7 @@ FROM raw.providers;
 DROP TABLE IF EXISTS analytics.fact_encounters CASCADE;
 
 CREATE TABLE analytics.fact_encounters (
-    id TEXT PRIMARY KEY,
+    id TEXT,
     start_date DATE,
     end_date DATE,
     patient_id TEXT,
@@ -157,14 +157,15 @@ SELECT
     payer,
     encounter_class,
     description,
-    CAST(GREATEST(base_encounter_cost,0) AS NUMERIC(12,2)) AS base_encounter_cost,
-    CAST(GREATEST(total_claim_cost,0) AS NUMERIC(12,2)) AS total_claim_cost,
-    CAST(GREATEST(payer_coverage,0) AS NUMERIC(12,2)) AS payer_coverage,
+    CAST(base_encounter_cost AS NUMERIC(12,2)) AS base_encounter_cost,
+    CAST(total_claim_cost AS NUMERIC(12,2)) AS total_claim_cost,
+    CAST(payer_coverage AS NUMERIC(12,2)) AS payer_coverage,
     CAST(reason_code AS BIGINT) AS reason_code,
     COALESCE(reason_description, 'Unknown') AS reason_description
 FROM raw.encounters e
 WHERE e.patient IN (SELECT id FROM analytics.dim_patients)
   AND e.provider IN (SELECT id FROM analytics.dim_providers);
+  
 
 -- =============================================
 -- 4. Analytics Conditions Fact Table
@@ -177,13 +178,15 @@ FROM raw.conditions c
 WHERE c.patient_id IN (SELECT id FROM analytics.dim_patients)
 	AND c.encounter_id IN (SELECT id FROM analytics.fact_encounters);
 
+
 -- =============================================
 -- 5. Analytics Claim Transactions Fact Table
 -- =============================================
 
-DROP TABLE IF EXISTS analytics.claim_transactions CASCADE;
 
-CREATE TABLE analytics.claim_transactions AS
+DROP TABLE IF EXISTS analytics.fact_claim_transactions CASCADE;
+
+CREATE TABLE analytics.fact_claim_transactions AS
 SELECT 
     id,
     claim_id,
@@ -227,6 +230,7 @@ SELECT
     supervising_provider_id
 FROM raw.claim_transactions;
 
+
 -- =============================================
 -- 6. Analytics Fact_Claim Table
 -- =============================================
@@ -268,46 +272,7 @@ SELECT
 FROM raw.claims c
 WHERE c.patient_id IN (SELECT id FROM analytics.dim_patients)
   AND c.provider_id IN (SELECT id FROM analytics.dim_providers);
--- =============================================
--- 7. Add Foreign Key Constraints
--- =============================================
--- Encounters -> Patients, Providers
 
-
-ALTER TABLE analytics.fact_encounters
-ADD CONSTRAINT fk_fact_encounters_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
-ADD CONSTRAINT fk_fact_encounters_provider FOREIGN KEY (provider_id) REFERENCES analytics.dim_providers(id);
-
--- Conditions -> Patients, Encounters
-ALTER TABLE analytics.fact_conditions
-ADD CONSTRAINT fk_fact_conditions_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
-ADD CONSTRAINT fk_fact_conditions_encounter FOREIGN KEY (encounter_id) REFERENCES analytics.fact_encounters(id);
-
--- Claim Transactions -> Patients, Providers
-ALTER TABLE analytics.fact_claim_transactions
-ADD CONSTRAINT fk_fact_claim_transactions_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
-ADD CONSTRAINT fk_fact_claim_transactions_provider FOREIGN KEY (provider_id) REFERENCES analytics.dim_providers(id),
-ADD CONSTRAINT fk_fact_claim_transactions_supervising_provider FOREIGN KEY (supervising_provider_id) REFERENCES analytics.dim_providers(id);
-
--- Claims -> Patients, Providers
-ALTER TABLE analytics.fact_claims
-ADD CONSTRAINT fk_fact_claims_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
-ADD CONSTRAINT fk_fact_claims_provider FOREIGN KEY (provider_id) REFERENCES analytics.dim_providers(id),
-ADD CONSTRAINT fk_fact_claims_referring_provider FOREIGN KEY (referring_provider_id) REFERENCES analytics.dim_providers(id),
-ADD CONSTRAINT fk_fact_claims_supervising_provider FOREIGN KEY (supervising_provider_id) REFERENCES analytics.dim_providers(id);
-
--- =============================================
--- 8. Add Indexes for Faster Analysis
--- =============================================
-
-CREATE INDEX idx_fact_encounters_patient ON analytics.fact_encounters(patient_id);
-CREATE INDEX idx_fact_encounters_provider ON analytics.fact_encounters(provider_id);
-CREATE INDEX idx_fact_conditions_patient ON analytics.fact_conditions(patient_id);
-CREATE INDEX idx_fact_conditions_encounter ON analytics.fact_conditions(encounter_id);
-CREATE INDEX idx_fact_claim_transactions_patient ON analytics.fact_claim_transactions(patient_id);
-CREATE INDEX idx_fact_claim_transactions_provider ON analytics.fact_claim_transactions(provider_id);
-CREATE INDEX idx_fact_claims_patient ON analytics.fact_claims(patient_id);
-CREATE INDEX idx_fact_claims_provider ON analytics.fact_claims(provider_id);
 
 
 -- =============================================
@@ -335,10 +300,11 @@ ALTER COLUMN full_name SET NOT NULL;
 ALTER TABLE analytics.fact_encounters
 ADD CONSTRAINT pk_fact_encounters PRIMARY KEY (id);
 
+--
 ALTER TABLE analytics.fact_encounters
 ALTER COLUMN id SET NOT NULL,
-ALTER COLUMN patient SET NOT NULL;
-
+ALTER COLUMN patient_id SET NOT NULL;
+--
 
 ALTER TABLE analytics.fact_conditions
 ADD CONSTRAINT pk_fact_conditions PRIMARY KEY (patient_id, encounter_id, start_date, code);
@@ -361,6 +327,49 @@ ALTER COLUMN patient_id SET NOT NULL,
 ALTER COLUMN provider_id SET NOT NULL;
 
 
+
+-- =============================================
+-- 8. Add Foreign Key Constraints
+-- =============================================
+
+-- Encounters -> Patients, Providers
+
+ALTER TABLE analytics.fact_encounters
+ADD CONSTRAINT fk_fact_encounters_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
+ADD CONSTRAINT fk_fact_encounters_provider FOREIGN KEY (provider_id) REFERENCES analytics.dim_providers(id);
+
+-- Conditions -> Patients, Encounters
+ALTER TABLE analytics.fact_conditions
+ADD CONSTRAINT fk_fact_conditions_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
+ADD CONSTRAINT fk_fact_conditions_encounter FOREIGN KEY (encounter_id) REFERENCES analytics.fact_encounters(id);
+
+-- Claim Transactions -> Patients, Providers
+ALTER TABLE analytics.fact_claim_transactions
+ADD CONSTRAINT fk_fact_claim_transactions_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
+ADD CONSTRAINT fk_fact_claim_transactions_provider FOREIGN KEY (provider_id) REFERENCES analytics.dim_providers(id),
+ADD CONSTRAINT fk_fact_claim_transactions_supervising_provider FOREIGN KEY (supervising_provider_id) REFERENCES analytics.dim_providers(id);
+
+-- Claims -> Patients, Providers
+ALTER TABLE analytics.fact_claims
+ADD CONSTRAINT fk_fact_claims_patient FOREIGN KEY (patient_id) REFERENCES analytics.dim_patients(id),
+ADD CONSTRAINT fk_fact_claims_provider FOREIGN KEY (provider_id) REFERENCES analytics.dim_providers(id),
+ADD CONSTRAINT fk_fact_claims_referring_provider FOREIGN KEY (referring_provider_id) REFERENCES analytics.dim_providers(id),
+ADD CONSTRAINT fk_fact_claims_supervising_provider FOREIGN KEY (supervising_provider_id) REFERENCES analytics.dim_providers(id);
+
+
+
+-- =============================================
+-- 9. Add Indexes for Faster Analysis
+-- =============================================
+
+CREATE INDEX idx_fact_encounters_patient ON analytics.fact_encounters(patient_id);
+CREATE INDEX idx_fact_encounters_provider ON analytics.fact_encounters(provider_id);
+CREATE INDEX idx_fact_conditions_patient ON analytics.fact_conditions(patient_id);
+CREATE INDEX idx_fact_conditions_encounter ON analytics.fact_conditions(encounter_id);
+CREATE INDEX idx_fact_claim_transactions_patient ON analytics.fact_claim_transactions(patient_id);
+CREATE INDEX idx_fact_claim_transactions_provider ON analytics.fact_claim_transactions(provider_id);
+CREATE INDEX idx_fact_claims_patient ON analytics.fact_claims(patient_id);
+CREATE INDEX idx_fact_claims_provider ON analytics.fact_claims(provider_id);
 
 
 
